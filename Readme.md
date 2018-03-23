@@ -1,10 +1,12 @@
+Schema Surgeon
+
 SchemaSurgeon provides the ability to create scripts to alter the database. There are two ways to run this program:
 
 1- Modifying data types of columns only
 
 This mode allows you to modify the data type of explicitly named columns. 
 
-SchemaSurgeon.exe -n <sandbox> -t <data_type> -c <database>.<schema>.<table_name>.<column_name> 
+SchemaSurgeon.exe -n *sandbox* -t *data_type* -c *database*.*schema*.*table_name*.*column_name*
 
    Options: 
    
@@ -23,7 +25,7 @@ In this mode, the program generates a sql script (AlterTables.sql) that includes
 
 This mode allows you to modify columns and all other database objects that contain references to those columns. You can specify a regular expression to define the pattern against which column names will be matched.
 
-SchemaSurgeon.exe -n <sandbox> -t <data_type> -s <database>.<schema> -r "<regexp>" -log -i <ignore_databases_list.txt>
+SchemaSurgeon.exe -n *sandbox* -t *data_type* -s *database*.*schema* -r "*regexp*" -log -i *ignore_databases_list.txt*
 
 Options: 
 
@@ -53,18 +55,23 @@ Options:
 In this mode, the program generates the following sql scripts that, when manually run against a server, alter all database objects that get affected. 
 
 AlterTables.sql 
+
 Contains a script to alter all columns whose names match the specified pattern (as well as all other columns that contain foreign key references - both inbound and outbound) to the desired data type.
 
 AlterSprocs.sql 
+
 Contains a script to alter all stored procedures that contain references to the tables whose columns are being modified and whose definitions contain variable declarations matching the given pattern. 
 
 AlterFuncs.sql
+
 Contains a script to alter all scalar-valued and table-valued functions that contain references to the tables whose columns are being modified and whose definitions contain variable declarations matching the given pattern. 
  
 AlterTriggers.sql
+
 Contains a script to alter triggers that contain references to the tables whose columns are being modified and whose definitions contain variable declarations matching the given pattern. 
 
 AlterUserDefinedTableTypes.sql
+
 Contains a script to alter user-defined table types that contain columns whose names match the given pattern. This script drops all stored procedures, functions and triggers that contain references to the table type being modified, drops and recreates the table type with updated column definition, and then recreates stored procedures, functions and triggers that were dropped. This sequence of operations occurs within a transaction.
 
 
