@@ -1,0 +1,38 @@
+# --------------- #
+# Compiled Source #
+# --------------- #
+*.dll
+*.exe
+lib/
+
+# ----------------- #
+# Diff/Merge Output #
+# ----------------- #
+*.orig
+
+# -------------------- #
+# Local Settings Files #
+# -------------------- #
+_Resharper*
+*.DotSettings
+*.suo
+*.user
+
+# -------------- #
+# NuGet Packages #
+# -------------- #
+nuget-packages/*
+# But don't ignore the repositories.config file!
+!nuget-packages/repositories.config
+
+# -------------- #
+# Package Output #
+# -------------- #
+output/
+
+# -------------- #
+# Project Output #
+# -------------- #
+bin/
+obj/
+packages/
