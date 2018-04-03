@@ -1,12 +1,36 @@
-Schema Surgeon
+# Schema Surgeon
+> SchemaSurgeon provides the ability to amend the Microsoft SQL database schema by generating sql scripts that can be run against SQL server database.  
 
-SchemaSurgeon provides the ability to create scripts to alter the database. There are two ways to run this program:
 
-1- Modifying data types of columns only
+## Motivation
+This tool was created out of a bussiness need to expand the size of data fields in SQL database in order to accommodate larger size of data. For example, let's say that you have a database with several tables that contain columns for representing unique customer ids. Let's say that the data field that stores customer id is of type char(8). Now your customer base is growing and you need to expand the field to say varchar(50) to accommodate more customers. This is not a trivial task if you have hundreds of tables with such columns and foreign key references from other tables as well as references from other stored procedures, triggers, functions, etc. This tool provides the functionality to automate the process of finding and updating such fields to the desired data type.  
+ 
+
+## Prerequisites
+Micrsoft .NET Framework 4.5.2 and MSBuild  
+ 
+
+## Development setup
+
+1. The easiest way to work with the code base is to install Visual Studio. You can also work with any other IDE provided you have .NET Framework 4.5.2 and MSBuild on your machine.
+2. If you installed Visual Studio, you can now open the SchemaSurgeon.sln in the root of the source code and build using Visual Studio.
+3. Open command prompt from /SchemaSurgeon/bin/Debug and run one of the commands decribed in the usage examples below. 
+
+For example, let's say that you have a database called transactions with a table called customer_details that contains a column customer_id of type char(8). The connection string spec "sandbox" is defined in App.config. To update this column to use varchar(255), run the following command:
+
+```SchemaSurgeon.exe -n sandbox -t varchar(255) -c transactions.dbo.customer_details.customer_id```
+ 
+
+## Usage Examples
+
+### Modifying data types of columns only
 
 This mode allows you to modify the data type of explicitly named columns. 
+Input: Connection, Database, Schema, Data type, Column names(s).
+Output: AlterTables.sql
 
-SchemaSurgeon.exe -n *sandbox* -t *data_type* -c *database*.*schema*.*table_name*.*column_name*
+Command:
+```SchemaSurgeon.exe -n *sandbox* -t *data_type* -c *database*.*schema*.*table_name*.*column_name*```
 
    Options: 
    
@@ -21,11 +45,14 @@ SchemaSurgeon.exe -n *sandbox* -t *data_type* -c *database*.*schema*.*table_name
 
 In this mode, the program generates a sql script (AlterTables.sql) that includes the specified columns as well as all other columns that contain foreign key references to them. The generated script can be run against a server to apply schema changes included in the script. This mode does not create scripts for modifying any other database objects. The specified columns can belong to different databases.
 
-2- Modifying all database objects
+### Modifying all database objects
 
 This mode allows you to modify columns and all other database objects that contain references to those columns. You can specify a regular expression to define the pattern against which column names will be matched.
 
-SchemaSurgeon.exe -n *sandbox* -t *data_type* -s *database*.*schema* -r "*regexp*" -log -i *ignore_databases_list.txt*
+Input: Connection, database, schema, data type, regular expression.
+Output: AlterTables.sql, AlterSprocs.sql, AlterFuncs.sql, AlterTriggers.sql, AlterUserDefinedTableTypes.sql.
+
+```SchemaSurgeon.exe -n *sandbox* -t *data_type* -s *database*.*schema* -r "*regexp*" -log -i *ignore_databases_list.txt*```
 
 Options: 
 
@@ -39,7 +66,7 @@ Options:
 	 Fully qualified schema name
 	 
 	 -r
-	 Regular expression that defines the pattern against which names of columns, functions, sprocs, triggers, etc. will be matched. E.g., ".*customer.*id.*"
+	 Regular expression that defines the pattern against which names of columns, and variable names in functions, sprocs, triggers, etc. will be matched. E.g., ".*customer.*id.*"
 	 
 	 -log  
 	 This is an optional parameter that can be specified to generate "Before" and "After" definitions of stored procedures, functions, triggers and user-defined table types that got modified. Any diff tool can be used to see the differences. 
@@ -54,24 +81,45 @@ Options:
 
 In this mode, the program generates the following sql scripts that, when manually run against a server, alter all database objects that get affected. 
 
-AlterTables.sql 
+* **AlterTables.sql** 
 
 Contains a script to alter all columns whose names match the specified pattern (as well as all other columns that contain foreign key references - both inbound and outbound) to the desired data type.
 
-AlterSprocs.sql 
+* **AlterSprocs.sql** 
 
 Contains a script to alter all stored procedures that contain references to the tables whose columns are being modified and whose definitions contain variable declarations matching the given pattern. 
 
-AlterFuncs.sql
+* **AlterFuncs.sql**
 
 Contains a script to alter all scalar-valued and table-valued functions that contain references to the tables whose columns are being modified and whose definitions contain variable declarations matching the given pattern. 
  
-AlterTriggers.sql
+* **AlterTriggers.sql**
 
 Contains a script to alter triggers that contain references to the tables whose columns are being modified and whose definitions contain variable declarations matching the given pattern. 
 
-AlterUserDefinedTableTypes.sql
+* **AlterUserDefinedTableTypes.sql**
 
-Contains a script to alter user-defined table types that contain columns whose names match the given pattern. This script drops all stored procedures, functions and triggers that contain references to the table type being modified, drops and recreates the table type with updated column definition, and then recreates stored procedures, functions and triggers that were dropped. This sequence of operations occurs within a transaction.
+Contains a script to alter user-defined table types that contain columns whose names match the given pattern. This script drops all stored procedures, functions and triggers that contain references to the table type being modified, drops and recreates the table type with updated column definition, and then recreates stored procedures, functions and triggers that were dropped. This sequence of operations occurs within a transaction.  
+ 
+
+## Release History
+
+* 0.0.1
+   * The first proper release  
+
+
+## Contributing
+
+Please read [Contributing.md](https://vbustash.vistaprint.net/projects/VCM/repos/schemasurgeon/browse/Contributing.md) for details on the process for submitting pull requests to us as well as ideas for future contribution.  
+
+
+## Contributors
+
+* **Smita Narayan**
+* **James Hart**
+* **Christopher Kwan**
+* **Vincent Del Toral** 
+* **Kevin Campusano**
+
 
 
