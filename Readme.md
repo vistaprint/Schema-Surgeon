@@ -101,6 +101,14 @@ Contains a script to alter triggers that contain references to the tables whose 
 
 Contains a script to alter user-defined table types that contain columns whose names match the given pattern. This script drops all stored procedures, functions and triggers that contain references to the table type being modified, drops and recreates the table type with updated column definition, and then recreates stored procedures, functions and triggers that were dropped. This sequence of operations occurs within a transaction.  
  
+## Architecture
+
+Please see [Architecture.md](https://github.com/smitanarayan/Schema-Surgeon/blob/master/Architecture.md) for details on underlying design.
+
+## Known Bugs and Limitations
+* Currently, only data fields of type string (char, varchar) can be expanded. However, the code can be easily extended to allow support for other data types in the future.
+* The user defined table type column can be updated only if the table type contains columns of type char, varchar or int. Moreover, the script produced for altering user-defined table type assumes that only one column in the table type needs to be modified. 
+* If any stored procedure, trigger or function that needs to be altered contains a bug in its definition (e.g., a reference to deprecated table), it is dropped but not re-created. An error or a warning is issued. Such errors can be eliminated by excluding the stored procedures with bad definitions. 
 
 ## Release History
 
@@ -110,7 +118,7 @@ Contains a script to alter user-defined table types that contain columns whose n
 
 ## Contributing
 
-Please read [Contributing.md](https://vbustash.vistaprint.net/projects/VCM/repos/schemasurgeon/browse/Contributing.md) for details on the process for submitting pull requests to us as well as ideas for future contribution.  
+Please read [Contributing.md](https://github.com/smitanarayan/Schema-Surgeon/blob/master/Contributing.md) for details on the process for submitting pull requests to us as well as ideas for future contribution.  
 
 
 ## Contributors
