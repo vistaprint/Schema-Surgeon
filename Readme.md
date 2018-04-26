@@ -3,11 +3,11 @@
 
 
 ## Motivation
-This tool was created out of a bussiness need to expand the size of data fields in SQL database in order to accommodate larger size of data. For example, let's say that you have a database with several tables that contain columns for representing unique customer ids. Let's say that the data field that stores customer id is of type char(8). Now your customer base is growing and you need to expand the field to say varchar(50) to accommodate more customers. This is not a trivial task if you have hundreds of tables with such columns and foreign key references from other tables as well as references from other stored procedures, triggers, functions, etc. This tool provides the functionality to automate the process of finding and updating such fields to the desired data type.  
+This tool was created out of a business need to expand the size of data fields in SQL database in order to accommodate larger size of data. For example, let's say that you have a database with several tables that contain columns for representing unique customer ids. Let's say that the data field that stores customer id is of type char(8). Now your customer base is growing and you need to expand the field to say varchar(50) to accommodate more customers. This is not a trivial task if you have hundreds of tables with such columns and foreign key references from other tables as well as references from other stored procedures, triggers, functions, etc. This tool provides the functionality to automate the process of finding and updating such fields to the desired data type.  
  
 
 ## Prerequisites
-Micrsoft .NET Framework 4.5.2 and MSBuild  
+Microsoft .NET Framework 4.5.2 and MSBuild  
  
 
 ## Development setup
@@ -60,7 +60,7 @@ Options:
 	 Connection string spec (Must be specified in App.config with four fields: {data source}, {initial catalog}, {user Id}, {password})
 	 
 	 -t 
-	 The new data type of the column(s) e.g., varchar(255). This data type must be bigger than existing data type so that existing data can be accommodated. For example char(3) can be updated to char (4) but not char(2). 
+	 The new data type of the column(s) e.g., varchar(255). This data type must be bigger than existing data type so that existing data can be accommodated. For example char(3) can be updated to char(4) but not char(2). 
 	 
 	 -s 
 	 Fully qualified schema name
@@ -103,7 +103,7 @@ Contains a script to alter user-defined table types that contain columns whose n
  
 ## Architecture
 
-Please see [Architecture.md](https://github.com/smitanarayan/Schema-Surgeon/blob/master/Architecture.md) for details on underlying design.
+Please see [Architecture.md](Architecture.md) for details on underlying design.
 
 ## Known Bugs and Limitations
 * Currently, only data fields of type string (char, varchar) can be expanded. However, the code can be easily extended to allow support for other data types in the future.
@@ -118,14 +118,14 @@ Please see [Architecture.md](https://github.com/smitanarayan/Schema-Surgeon/blob
 
 ## Contributing
 
-Please read [Contributing.md](https://github.com/smitanarayan/Schema-Surgeon/blob/master/Contributing.md) for details on the process for submitting pull requests to us as well as ideas for future contribution.  
+Please read [Contributing.md](Contributing.md) for details on the process for submitting pull requests to us as well as ideas for future contribution.  
 
 
 ## Contributors
 
 * **Smita Narayan**
 * **James Hart**
-* **Christopher Kwan**
+* [**Christopher Kwan**](https://github.com/chriskwan)
 * **Vincent Del Toral** 
 * **Kevin Campusano**
 
